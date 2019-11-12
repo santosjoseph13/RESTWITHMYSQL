@@ -21,4 +21,19 @@ Book.getAllTask = function (result) {
         });   
 };
 
+Book.createBook = function (newBook, result) {
+    console.log('------asdf',newBook)    
+    sql.query("INSERT INTO books SET = ?", [newBook],  function (err, res) {
+            
+            if(err) {
+                console.log("error: ", err);
+                result(err, null);
+            }
+            else{
+                console.log(res.insertId);
+                result(null, res.insertId);
+            }
+        });           
+};
+
 module.exports = Book;

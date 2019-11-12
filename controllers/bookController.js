@@ -6,13 +6,13 @@ exports.index = function(req, res) {
 
 // Display list of all books.
 exports.book_list = function(req, res) {
-    
-   Book.getAllTask(function(err,task){
+  //  var new_book = new Book(req.body);
+   Book.getAllTask(function(err,req){
     console.log('controllersucces')
     if(err)
         res.send(err);
-        console.log('res',task)
-    res.send(task);
+        console.log('res',req)
+    res.send(req);
 
 
    });
@@ -31,7 +31,24 @@ exports.book_create_get = function(req, res) {
 
 // Handle book create on POST.
 exports.book_create_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Book create POST');
+   // res.send('NOT IMPLEMENTED: Book create POST');
+   // var new_book = new Book(req.body);
+
+    //handles null error 
+   /*   if(!new_book.task || !new_task.status){
+  
+              res.status(400).send({ error:true, message: 'Please provide task/status' });
+  
+          }
+  else{ */
+    
+    Book.createBook(req.body, function(err, task) {
+      
+      if (err)
+        res.send(err);
+      res.json(task);
+    });
+  
 };
 
 // Display book delete form on GET.
