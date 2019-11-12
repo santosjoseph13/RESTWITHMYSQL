@@ -6,10 +6,17 @@ exports.index = function(req, res) {
 
 // Display list of all books.
 exports.book_list = function(req, res) {
-    const test1 = {bookname: "test1",author:"what the fack"}
-    const test2 = {bookname: "test2",author:"what the fuck"}
-   // res.send(test1);
-    res.json([test1,test2])
+    
+   Book.getAllTask(function(err,task){
+    console.log('controllersucces')
+    if(err)
+        res.send(err);
+        console.log('res',task)
+    res.send(task);
+
+
+   });
+ 
 };
 
 // Display detail page for a specific book.
