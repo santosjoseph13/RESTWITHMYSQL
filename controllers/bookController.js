@@ -12,29 +12,23 @@ exports.book_list = function(req, res) {
         res.send(err);
         console.log('res',req)
     res.send(req);
-
-
    });
  
 };
 
 // Display detail page for a specific book.
 exports.book_detail = function(req, res) {
-    console.log('--------------------bookdetail',req.query.Name);
-        Book.getBookDetails(req.query.Name,function(err,result){
-            if(result.length < 1){
-                console.log('------------nulll',result);
-               // res.send(result);       
-            }
-            else{
-                console.log('-------CONTROLLER',result);
-                res.send([result]);
-                
-            }              
-         
-        }); 
-          
-
+           Book.getBookDetails(req.query.Name,function(err,result){      
+              if(result.length > 0){
+                res.send(result);
+              }
+              else{
+                  console.log('No user found',result);
+                  res.send(result);
+              }
+               
+            
+        });
 };
 
 // Display book create form on GET.
@@ -44,31 +38,32 @@ exports.book_create_get = function(req, res) {
 
 // Handle book create on POST.
 exports.book_create_post = function(req, res) {
-   // res.send('NOT IMPLEMENTED: Book create POST');
     var new_book = new Book(req.body);
    console.log('------------------',[new_book.Name,new_book.Author]) 
     //handles null error 
     if(!new_book.Name || !new_book.Author){
   
-              res.status(400).send({ error:true, message: 'Please provide task/status' });
-  
+              res.status(400).send({ error:true, message: 'Please provide task/status' });  
           }
   else{ 
-    //console.log(req.body)
-    Book.createBook(new_book, function(err, task) {
+ 
+    Book.createBook(new_book, function(err, result) {
     
       if (err)
         res.send(err);
-      res.json(task);
+      res.send(result);
      });
     }
 };
+
+
 
 //Checks if the parameters are met
 exports.book_checkBookName = function (req){
     console.log('------------------enterchecker',req.query.Name);
     if(req.query.Name.length  < 1)
     {
+        
         boolres = false;
         return boolres;
     }
@@ -85,6 +80,7 @@ exports.book_delete_get = function(req, res) {
 // Handle book delete on POST.
 exports.book_delete_post = function(req, res) {
     res.send('NOT IMPLEMENTED: Book delete POST');
+    
 };
 
 // Display book update form on GET.

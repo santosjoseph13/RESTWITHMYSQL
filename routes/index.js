@@ -1,3 +1,5 @@
-router.get('/', function(req, res) {
-    res.redirect('/actions');
-  });
+/* const router = require('express').Router();
+var generalroutes =  require('./routes');
+
+
+router.use('/actions', generalroutes); */

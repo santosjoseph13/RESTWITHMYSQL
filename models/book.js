@@ -21,17 +21,16 @@ Book.getAllTask = function (result) {
         });   
 };
 
-Book.createBook = function (newBook, result) {
-    console.log('------fromMODEL',newBook)    
-    sql.query("INSERT INTO books SET ?", [newBook],  function (err, res) {
+Book.createBook = function (newBook, resultofproc) {
+      sql.query("INSERT INTO books SET ?", [newBook],  function (errorfromquery, resultfromquery) {
             
             if(err) {
-                console.log("error: ", err);
-                result(err, null);
+                console.log("error: ", errorfromquery);
+                resultofproc(errorfromquery, null);
             }
             else{
-                console.log(res.insertId);
-                result(null, res.insertId);
+                console.log(resultfromquery.insertId);
+                resultofproc(null, resultfromquery.insertId);
             }
         });           
 };
@@ -48,6 +47,16 @@ Book.getBookDetails = function(param,result){
             console.log('-----------------FROM MODEL',res)
             result(null,res)
         }
+
+    });
+
+};
+
+Book.deletebyName = function(name,result){
+    sql.query("DELETE FROM books WHERE Name=?",name,function(err,res){
+        if(err)
+            result(err,null)
+        else
 
     });
 

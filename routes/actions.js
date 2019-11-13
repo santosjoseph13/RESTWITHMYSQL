@@ -18,7 +18,7 @@ router.post('/book/create', book_controller.book_create_post);
 router.get('/book/:id/delete', book_controller.book_delete_get);
 
 // POST request to delete Book.
-router.post('/book/:id/delete', book_controller.book_delete_post);
+router.post('/book/delete/:name', book_controller.book_delete_post);
 
 // GET request to update Book.
 router.get('/book/:id/update', book_controller.book_update_get);
@@ -28,17 +28,28 @@ router.post('/book/:id/update', book_controller.book_update_post);
 
 // GET request for one Book.
 
-router.get('/book',function(req,res){
-    console.log('--------------------bookroute',req.query.Name)
-if(book_controller.book_checkBookName(req)== true)
-{
-    console.log('--------------------cbheckBOOK',req.query.Name)
-    book_controller.book_detail(req)
-}
-else
-    console.log("-----------------null")
+router.get('/book',book_controller.book_detail);
 
-});
+/* function(req,res){
+    
+if(book_controller.book_checkBookName(req)== true)
+
+{ 
+    console.log('----------------AFTER checkbook',req.query.Name);
+       if(book_controller.book_detail(req,res) != null){
+        console.log('----------------AFTER BOOKDETAIL',result);
+        res.end();
+       }
+       
+      // res.send(result)
+}
+else{
+    console.log("-----------------null");
+   // res.send({error: true,message:'Please enter book parameters'});
+   res.end();
+}
+
+}); */
 
 // GET request for list of all Book items.
 router.get('/books', book_controller.book_list);
