@@ -36,4 +36,21 @@ Book.createBook = function (newBook, result) {
         });           
 };
 
+Book.getBookDetails = function(param,result){
+    sql.query("SELECT * FROM books WHERE Name=?",param,function(err,res){
+        if(err)
+        {
+            console.log(err);
+            result(err,null);
+        }
+        else
+        {
+            console.log('-----------------FROM MODEL',res)
+            result(null,res)
+        }
+
+    });
+
+};
+
 module.exports = Book;

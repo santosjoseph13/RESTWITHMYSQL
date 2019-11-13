@@ -27,7 +27,18 @@ router.get('/book/:id/update', book_controller.book_update_get);
 router.post('/book/:id/update', book_controller.book_update_post);
 
 // GET request for one Book.
-router.get('/book/:id', book_controller.book_detail);
+
+router.get('/book',function(req,res){
+    console.log('--------------------bookroute',req.query.Name)
+if(book_controller.book_checkBookName(req)== true)
+{
+    console.log('--------------------cbheckBOOK',req.query.Name)
+    book_controller.book_detail(req)
+}
+else
+    console.log("-----------------null")
+
+});
 
 // GET request for list of all Book items.
 router.get('/books', book_controller.book_list);

@@ -6,7 +6,6 @@ exports.index = function(req, res) {
 
 // Display list of all books.
 exports.book_list = function(req, res) {
-  //  var new_book = new Book(req.body);
    Book.getAllTask(function(err,req){
     console.log('controllersucces')
     if(err)
@@ -21,7 +20,21 @@ exports.book_list = function(req, res) {
 
 // Display detail page for a specific book.
 exports.book_detail = function(req, res) {
-    res.send('NOT IMPLEMENTED: Book detail: ' + req.params.id);
+    console.log('--------------------bookdetail',req.query.Name);
+        Book.getBookDetails(req.query.Name,function(err,result){
+            if(result.length < 1){
+                console.log('------------nulll',result);
+               // res.send(result);       
+            }
+            else{
+                console.log('-------CONTROLLER',result);
+                res.send([result]);
+                
+            }              
+         
+        }); 
+          
+
 };
 
 // Display book create form on GET.
@@ -49,6 +62,19 @@ exports.book_create_post = function(req, res) {
       res.json(task);
      });
     }
+};
+
+//Checks if the parameters are met
+exports.book_checkBookName = function (req){
+    console.log('------------------enterchecker',req.query.Name);
+    if(req.query.Name.length  < 1)
+    {
+        boolres = false;
+        return boolres;
+    }
+    else
+        boolres =true;
+        return boolres;
 };
 
 // Display book delete form on GET.
