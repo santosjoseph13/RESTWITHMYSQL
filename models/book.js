@@ -1,9 +1,9 @@
 const sql = require('../database/mysql')
 
-var Book = function(task){
-    this.task = task.task;
-    this.status  = task.status;
-    this.created_at = new Date();
+var Book = function(book){
+    this.Name = book.Name;
+    this.Author  = book.Author;
+    this.Date = book.Date;
 
 };
 Book.getAllTask = function (result) {
@@ -22,8 +22,8 @@ Book.getAllTask = function (result) {
 };
 
 Book.createBook = function (newBook, result) {
-    console.log('------asdf',newBook)    
-    sql.query("INSERT INTO books SET = ?", [newBook],  function (err, res) {
+    console.log('------fromMODEL',newBook)    
+    sql.query("INSERT INTO books SET ?", [newBook],  function (err, res) {
             
             if(err) {
                 console.log("error: ", err);

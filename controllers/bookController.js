@@ -32,23 +32,23 @@ exports.book_create_get = function(req, res) {
 // Handle book create on POST.
 exports.book_create_post = function(req, res) {
    // res.send('NOT IMPLEMENTED: Book create POST');
-   // var new_book = new Book(req.body);
-
+    var new_book = new Book(req.body);
+   console.log('------------------',[new_book.Name,new_book.Author]) 
     //handles null error 
-   /*   if(!new_book.task || !new_task.status){
+    if(!new_book.Name || !new_book.Author){
   
               res.status(400).send({ error:true, message: 'Please provide task/status' });
   
           }
-  else{ */
+  else{ 
+    //console.log(req.body)
+    Book.createBook(new_book, function(err, task) {
     
-    Book.createBook(req.body, function(err, task) {
-      
       if (err)
         res.send(err);
       res.json(task);
-    });
-  
+     });
+    }
 };
 
 // Display book delete form on GET.
