@@ -6,26 +6,31 @@ exports.index = function(req, res) {
 
 // Display list of all books.
 exports.book_list = function(req, res) {
-   Book.getAllTask(function(err,req){
+   Book.getAllBooks(function(err,result){
     console.log('controllersucces')
     if(err)
         res.send(err);
-        console.log('res',req)
-    res.send(req);
+        console.log('res',result)
+    res.send(result);
    });
  
 };
 
 // Display detail page for a specific book.
 exports.book_detail = function(req, res) {
-           Book.getBookDetails(req.query.Name,function(err,result){      
+           Book.getBookDetails(req.query.Name,function(err,result){    
+        try{  
               if(result.length > 0){
                 res.send(result);
               }
               else{
-                  console.log('No user found',result);
+                  console.log('No book found',result);
                   res.send(result);
               }
+            }
+        catch{
+            res.send({ error:true, message: 'Please provide book Name'})
+        }
                
             
         });
@@ -33,25 +38,28 @@ exports.book_detail = function(req, res) {
 
 // Display book create form on GET.
 exports.book_create_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Book create GET');
+ 
 };
 
 // Handle book create on POST.
 exports.book_create_post = function(req, res) {
     var new_book = new Book(req.body);
-   console.log('------------------',[new_book.Name,new_book.Author]) 
     //handles null error 
     if(!new_book.Name || !new_book.Author){
   
-              res.status(400).send({ error:true, message: 'Please provide task/status' });  
+              res.status(400).send({ error:true, message: 'Please provide book detail' });  
           }
   else{ 
  
     Book.createBook(new_book, function(err, result) {
     
-      if (err)
+      if (err){
         res.send(err);
-      res.send(result);
+      }
+    else{
+        res.send({createdBook: new_book});
+        console.log(new_book);  
+    }
      });
     }
 };
@@ -74,22 +82,58 @@ exports.book_checkBookName = function (req){
 
 // Display book delete form on GET.
 exports.book_delete_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Book delete GET');
+    console.log('-------------------gromcontroler',req.query.Name)
+    Book.getBookDetails(req.query.Name,function(err,result){ 
+        console.log('-------------------gromcontroler',req.query.Name)     
+        if(result.length > 0){
+          res.send(result);
+        }
+        else{
+            console.log('No user found',result);
+            res.send({ message: 'No name found' });
+          
+        }   
+    });
 };
 
 // Handle book delete on POST.
-exports.book_delete_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Book delete POST');
+exports.book_delete_delete = function(req, res) {
+    Book.deletebyName(req.query.Name,function(err,result){      
+        if(result.affectedRows > 0){
+            console.log('row affected', req.query.Name)
+          res.send(result);
+        }
+        else{
+            console.log('No user found',result)                   
+        }             
+  });
     
 };
 
 // Display book update form on GET.
 exports.book_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Book update GET');
+    console.log('------------------IDSEND',req.params.id) 
+    Book.getBookDetailsID(req.params.id,function(err,result){ 
+        console.log('-------------------gromcontroler',req.query.Name)     
+        if(result.length > 0){
+          res.send(result);
+        }
+        else{
+            console.log('No user found',result);
+            res.send({ message: 'No book found' });          
+        }   
+    });
 };
 
 // Handle book update on POST.
-exports.book_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Book update POST');
+exports.book_update_put = function(req, res) {
+    Book.updateDetailsbyID(req.params.id, new Book(req.body), function(err, result) {
+        if (err)
+          res.send(err);
+        console.log( {changedvalue:req.body,rsultingparam:result});
+        res.send({changedvalue:req.body,rsultingparam:result});
+       // res.json(result);
+        
+      });
 };
 

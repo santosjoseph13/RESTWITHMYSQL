@@ -6,7 +6,7 @@ var Book = function(book){
     this.Date = book.Date;
 
 };
-Book.getAllTask = function (result) {
+Book.getAllBooks = function (result) {
     sql.query("Select * from books", function (err, res) {
 
             if(err) {
@@ -24,7 +24,7 @@ Book.getAllTask = function (result) {
 Book.createBook = function (newBook, resultofproc) {
       sql.query("INSERT INTO books SET ?", [newBook],  function (errorfromquery, resultfromquery) {
             
-            if(err) {
+            if(errorfromquery) {
                 console.log("error: ", errorfromquery);
                 resultofproc(errorfromquery, null);
             }
@@ -54,11 +54,39 @@ Book.getBookDetails = function(param,result){
 
 Book.deletebyName = function(name,result){
     sql.query("DELETE FROM books WHERE Name=?",name,function(err,res){
+    
         if(err)
             result(err,null)
+        else
+            result(null,res)
+            
         
     });
 
+};
+
+Book.getBookDetailsID = function(id,result){
+    sql.query("SELECT * FROM books WHERE id=?", [ id], function (err, res) {
+        if(err) {
+            console.log("error: ", err);
+              result(null, err);
+           }
+         else{   
+           result(null, res);
+              }
+          }); 
+};
+
+Book.updateDetailsbyID = function(id,input,result){
+    sql.query("UPDATE books SET ? WHERE id = ?", [input, id], function (err, res) {
+        if(err) {
+            console.log("error: ", err);
+              result(null, err);
+           }
+         else{   
+           result(null, res,input);
+              }
+          }); 
 };
 
 module.exports = Book;

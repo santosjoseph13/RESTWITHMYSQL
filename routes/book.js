@@ -9,26 +9,26 @@ var book_controller = require('../controllers/bookController');
 router.get('/', book_controller.index);
 
 // GET request for creating a Book. NOTE This must come before routes that display Book (uses id).
-router.get('/book/create', book_controller.book_create_get);
+router.get('/create', book_controller.book_create_get);
 
 // POST request for creating Book.
-router.post('/book/create', book_controller.book_create_post);
+router.post('/create', book_controller.book_create_post);
 
 // GET request to delete Book.
-router.get('/book/:id/delete', book_controller.book_delete_get);
+router.get('/delete', book_controller.book_delete_get);
 
 // POST request to delete Book.
-router.post('/book/delete/:name', book_controller.book_delete_post);
+router.delete('/delete', book_controller.book_delete_delete);
 
 // GET request to update Book.
-router.get('/book/:id/update', book_controller.book_update_get);
+router.get('/update/:id', book_controller.book_update_get);
 
 // POST request to update Book.
-router.post('/book/:id/update', book_controller.book_update_post);
+router.put('/update/:id', book_controller.book_update_put);
 
 // GET request for one Book.
 
-router.get('/book',book_controller.book_detail);
+router.get('/search',book_controller.book_detail);
 
 /* function(req,res){
     
@@ -52,6 +52,6 @@ else{
 }); */
 
 // GET request for list of all Book items.
-router.get('/books', book_controller.book_list);
+router.get('/list', book_controller.book_list);
 
 module.exports = router;
