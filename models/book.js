@@ -56,8 +56,7 @@ Book.deletebyName = function(name,result){
     sql.query("DELETE FROM books WHERE Name=?",name,function(err,res){
         if(err)
             result(err,null)
-        else
-
+        
     });
 
 };

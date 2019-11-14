@@ -1,5 +1,8 @@
-/* const router = require('express').Router();
-var generalroutes =  require('./routes');
+const router = require('express').Router();
+const  account  = require('../routes/account');
 
 
-router.use('/actions', generalroutes); */
+router.use('/account', account); 
+
+
+module.exports = router;
