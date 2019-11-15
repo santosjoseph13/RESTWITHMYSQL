@@ -1,5 +1,6 @@
 const sql = require('../database/mysql')
-
+const logger = require('../logger');
+ const TAG = '[BookModel]';
 var Book = function(book){
     this.Name = book.Name;
     this.Author  = book.Author;
@@ -7,6 +8,8 @@ var Book = function(book){
 
 };
 Book.getAllBooks = function (result) {
+    const ACTION = '[getAllBooks]'
+    logger.log('info',`${TAG}${ACTION}[Select * from books]`);
     sql.query("Select * from books", function (err, res) {
 
             if(err) {
@@ -14,7 +17,7 @@ Book.getAllBooks = function (result) {
                 result(null, err);
             }
             else{
-              console.log('tasks : ', res);  
+                
 
              result(null, res);
             }
@@ -22,6 +25,8 @@ Book.getAllBooks = function (result) {
 };
 
 Book.createBook = function (newBook, resultofproc) {
+    const ACTION = '[createBook]'
+    logger.log('info',`${TAG}${ACTION}[INSERT INTO books SET ?]`);
       sql.query("INSERT INTO books SET ?", [newBook],  function (errorfromquery, resultfromquery) {
             
             if(errorfromquery) {
@@ -29,13 +34,15 @@ Book.createBook = function (newBook, resultofproc) {
                 resultofproc(errorfromquery, null);
             }
             else{
-                console.log(resultfromquery.insertId);
-                resultofproc(null, resultfromquery.insertId);
+                
+                resultofproc(null, resultfromquery);
             }
         });           
 };
 
 Book.getBookDetails = function(param,result){
+    const ACTION = '[getBookDetails]'
+    logger.log('info',`${TAG}${ACTION}[SELECT * FROM books WHERE Name=?]`);
     sql.query("SELECT * FROM books WHERE Name=?",param,function(err,res){
         if(err)
         {
@@ -44,7 +51,6 @@ Book.getBookDetails = function(param,result){
         }
         else
         {
-            console.log('-----------------FROM MODEL',res)
             result(null,res)
         }
 
@@ -53,6 +59,8 @@ Book.getBookDetails = function(param,result){
 };
 
 Book.deletebyName = function(name,result){
+    const ACTION = '[deletebyName]'
+    logger.log('info',`${TAG}${ACTION}[DELETE FROM books WHERE Name=?]`);
     sql.query("DELETE FROM books WHERE Name=?",name,function(err,res){
     
         if(err)
@@ -66,6 +74,8 @@ Book.deletebyName = function(name,result){
 };
 
 Book.getBookDetailsID = function(id,result){
+    const ACTION = '[getBookDetailsID]'
+    logger.log('info',`${TAG}${ACTION}[SELECT * FROM books WHERE id=?]`);
     sql.query("SELECT * FROM books WHERE id=?", [ id], function (err, res) {
         if(err) {
             console.log("error: ", err);
@@ -78,6 +88,8 @@ Book.getBookDetailsID = function(id,result){
 };
 
 Book.updateDetailsbyID = function(id,input,result){
+    const ACTION = '[updateDetailsbyID]'
+    logger.log('info',`${TAG}${ACTION}[UPDATE books SET ? WHERE id = ?]`);
     sql.query("UPDATE books SET ? WHERE id = ?", [input, id], function (err, res) {
         if(err) {
             console.log("error: ", err);

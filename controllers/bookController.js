@@ -1,4 +1,6 @@
 var Book = require('../models/book');
+const logger = require('../logger');
+const { response, SUCCESS, EMPLOYEE_EXISTS, CREATED, EMPLOYEE_NOT_EXISTS, SUCCESS_CHANGE_COMPANY_INFO } = require('../response');
 
 exports.index = function(req, res) {
     res.send('NOT IMPLEMENTED: Site Home Page');
@@ -7,11 +9,15 @@ exports.index = function(req, res) {
 // Display list of all books.
 exports.book_list = function(req, res) {
    Book.getAllBooks(function(err,result){
-    console.log('controllersucces')
-    if(err)
+    if(err){
         res.send(err);
-        console.log('res',result)
+        logger.log('error',`QUERY UNSUCCESSFULL`)
+        
+    }
+    else
     res.send(result);
+   // console.log('All books shown',JSON.stringify(result))
+    res.success(response(SUCCESS,'',result));
    });
  
 };
@@ -21,14 +27,17 @@ exports.book_detail = function(req, res) {
            Book.getBookDetails(req.query.Name,function(err,result){    
         try{  
               if(result.length > 0){
+                logger.log('info',`Book detail retrieved${JSON.stringify(result)}`)
                 res.send(result);
               }
               else{
                   console.log('No book found',result);
+                  logger.log('error',`No book found ${err.code}`)
                   res.send(result);
               }
             }
         catch{
+            logger.log('error',`Please provide book Name`)
             res.send({ error:true, message: 'Please provide book Name'})
         }
                
@@ -46,19 +55,22 @@ exports.book_create_post = function(req, res) {
     var new_book = new Book(req.body);
     //handles null error 
     if(!new_book.Name || !new_book.Author){
-  
-              res.status(400).send({ error:true, message: 'Please provide book detail' });  
+
+              res.status(400).send({ error:true, message: 'Please provide book details' });
+              logger.log('error',`Please provide book details`)
           }
   else{ 
  
     Book.createBook(new_book, function(err, result) {
     
       if (err){
+        logger.log('error',`Error creating a book${err.code}`)
         res.send(err);
       }
     else{
+        logger.log('info',`New book added[${JSON.stringify(new_book)}]`)
         res.send({createdBook: new_book});
-        console.log(new_book);  
+         
     }
      });
     }
@@ -68,7 +80,7 @@ exports.book_create_post = function(req, res) {
 
 //Checks if the parameters are met
 exports.book_checkBookName = function (req){
-    console.log('------------------enterchecker',req.query.Name);
+    
     if(req.query.Name.length  < 1)
     {
         
@@ -81,16 +93,17 @@ exports.book_checkBookName = function (req){
 };
 
 // Display book delete form on GET.
-exports.book_delete_get = function(req, res) {
-    console.log('-------------------gromcontroler',req.query.Name)
-    Book.getBookDetails(req.query.Name,function(err,result){ 
-        console.log('-------------------gromcontroler',req.query.Name)     
+exports.book_delete_get = function(req, res) {   
+    Book.getBookDetails(req.query.Name,function(err,result){          
         if(result.length > 0){
+            logger.log('info',`Successfully displayed book[${JSON.stringify(result)}]`)
+            res.success()
           res.send(result);
         }
         else{
-            console.log('No user found',result);
+            logger.log('error',`No book found ${err.code}`)
             res.send({ message: 'No name found' });
+            r
           
         }   
     });
@@ -100,10 +113,12 @@ exports.book_delete_get = function(req, res) {
 exports.book_delete_delete = function(req, res) {
     Book.deletebyName(req.query.Name,function(err,result){      
         if(result.affectedRows > 0){
+            logger.log('info',`Successfully deleted Name:[${JSON.stringify(req.query.Name)}]`)
             console.log('row affected', req.query.Name)
           res.send(result);
         }
         else{
+            logger.log('info',`Delete unsuccessful${err.code}`)
             console.log('No user found',result)                   
         }             
   });
@@ -112,14 +127,13 @@ exports.book_delete_delete = function(req, res) {
 
 // Display book update form on GET.
 exports.book_update_get = function(req, res) {
-    console.log('------------------IDSEND',req.params.id) 
-    Book.getBookDetailsID(req.params.id,function(err,result){ 
-        console.log('-------------------gromcontroler',req.query.Name)     
+        Book.getBookDetailsID(req.params.id,function(err,result){ 
         if(result.length > 0){
+            logger.log('info',`Successfully displayed book details[${JSON.stringify(result)}]`)
           res.send(result);
         }
         else{
-            console.log('No user found',result);
+            logger.log('info',`Book not found ${err.code}`)
             res.send({ message: 'No book found' });          
         }   
     });
@@ -128,11 +142,15 @@ exports.book_update_get = function(req, res) {
 // Handle book update on POST.
 exports.book_update_put = function(req, res) {
     Book.updateDetailsbyID(req.params.id, new Book(req.body), function(err, result) {
-        if (err)
+        if (err){
+            logger.log('info',`Book update unsuccessful ${err.code}`)
           res.send(err);
-        console.log( {changedvalue:req.body,rsultingparam:result});
-        res.send({changedvalue:req.body,rsultingparam:result});
-       // res.json(result);
+        }
+        //console.log( {changedvalue:req.body});
+        else{
+        logger.log('info',`Book successfully updated[${JSON.stringify(req.body)}]`)
+        res.send(req.body);
+        }
         
       });
 };

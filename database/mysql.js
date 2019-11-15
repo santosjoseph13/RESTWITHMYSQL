@@ -1,4 +1,5 @@
 var mysql = require('mysql')
+const logger = require('../logger');
 
 var connection = mysql.createConnection({
     host:'localhost',
@@ -8,8 +9,10 @@ var connection = mysql.createConnection({
     database:'restdb'
 
 })
-connection.connect(function(err){
-    if (err) throw err;
+connection.connect(function(err,restdb){
+    if (err) throw logger.log('error',`${err.code}`);
+    else logger.log('info',"Connected to DB")
+    
     
 })
 
