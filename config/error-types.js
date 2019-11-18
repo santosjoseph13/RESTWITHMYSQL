@@ -208,5 +208,12 @@ module.exports = {
         code: -30,
         message: 'Employee address already existing.'
       }
+    },
+    BOOK_EXISTS: {
+      status: 409,
+      body: {
+        code: -30,
+        message: 'Book already existing.'
+      }
     }
   };

@@ -58,6 +58,45 @@ Book.getBookDetails = function(param,result){
 
 };
 
+Book.getBookbyName = (bookname) => {
+    const ACTION = '[getByID]';
+    logger.log('info',`${TAG}${ACTION}[SELECT * FROM books WHERE Name=?]`);
+    sql.query("SELECT * FROM books WHERE Name=?",bookname,function(err,res){
+        if(err)
+        {
+            console.log(err);
+            //res.send(err);
+        }
+        else
+        {
+
+            console.log('---------------------------------',res.length)
+            return res.length;
+        }
+
+    });
+
+};
+
+
+Book.getBookDetailsbyName = function(req,result){
+    const ACTION = '[getBookDetailsbyName]'
+    logger.log('info',`${TAG}${ACTION}[SELECT * FROM books WHERE Name=?]`);
+    sql.query("SELECT * FROM books WHERE Name=?",param,function(err,res){
+        if(err)
+        {
+            console.log(err);
+            result(err,null);
+        }
+        else
+        {
+            result(null,res)
+        }
+
+    });
+
+};
+
 Book.deletebyName = function(name,result){
     const ACTION = '[deletebyName]'
     logger.log('info',`${TAG}${ACTION}[DELETE FROM books WHERE Name=?]`);

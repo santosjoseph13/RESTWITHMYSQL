@@ -1,6 +1,6 @@
 var Book = require('../models/book');
 const logger = require('../logger');
-const { response, SUCCESS, EMPLOYEE_EXISTS, CREATED, EMPLOYEE_NOT_EXISTS, SUCCESS_CHANGE_COMPANY_INFO } = require('../response');
+const { response, SUCCESS, EMPLOYEE_EXISTS, CREATED,BOOK_CREATED,BOOK_EXISTS, EMPLOYEE_NOT_EXISTS, SUCCESS_CHANGE_BOOK_INFO } = require('../response');
 
 exports.index = function(req, res) {
     res.send('NOT IMPLEMENTED: Site Home Page');
@@ -15,7 +15,7 @@ exports.book_list = function(req, res) {
         
     }
     else
-    res.send(result);
+   // res.send(result);
    // console.log('All books shown',JSON.stringify(result))
     res.success(response(SUCCESS,'',result));
    });
@@ -28,7 +28,7 @@ exports.book_detail = function(req, res) {
         try{  
               if(result.length > 0){
                 logger.log('info',`Book detail retrieved${JSON.stringify(result)}`)
-                res.send(result);
+                res.success(response(SUCCESS,'',result));
               }
               else{
                   console.log('No book found',result);
@@ -51,7 +51,7 @@ exports.book_create_get = function(req, res) {
 };
 
 // Handle book create on POST.
-exports.book_create_post = function(req, res) {
+exports.book_create_post = async function(req, res) {
     var new_book = new Book(req.body);
     //handles null error 
     if(!new_book.Name || !new_book.Author){
@@ -59,21 +59,33 @@ exports.book_create_post = function(req, res) {
               res.status(400).send({ error:true, message: 'Please provide book details' });
               logger.log('error',`Please provide book details`)
           }
-  else{ 
- 
-    Book.createBook(new_book, function(err, result) {
-    
-      if (err){
-        logger.log('error',`Error creating a book${err.code}`)
-        res.send(err);
-      }
+  else{
+   
+      const checker =  Book.getBookbyName(new_book.Name);
+      console.log('--------------dddd',checker)
+     if(checker.length>0){
+        res.error(response(BOOK_EXISTS , ''))
+     }
     else{
-        logger.log('info',`New book added[${JSON.stringify(new_book)}]`)
-        res.send({createdBook: new_book});
-         
+        Book.createBook(new_book, function(err, result) {
+    
+            if (err){
+               logger.log('error',`Error creating a book${err.code}`)
+               res.send(err);
+            }
+            else{
+               logger.log('info',`New book added[${JSON.stringify(new_book)}]`)
+               res.success(response(BOOK_CREATED,'',new_book));
+           
+               }
+           });
+
+    
+        }
+    
     }
-     });
-    }
+
+    
 };
 
 
@@ -97,8 +109,8 @@ exports.book_delete_get = function(req, res) {
     Book.getBookDetails(req.query.Name,function(err,result){          
         if(result.length > 0){
             logger.log('info',`Successfully displayed book[${JSON.stringify(result)}]`)
-            res.success()
-          res.send(result);
+            //res.success()
+            res.success(response(SUCCESS,'',result));
         }
         else{
             logger.log('error',`No book found ${err.code}`)
@@ -115,7 +127,8 @@ exports.book_delete_delete = function(req, res) {
         if(result.affectedRows > 0){
             logger.log('info',`Successfully deleted Name:[${JSON.stringify(req.query.Name)}]`)
             console.log('row affected', req.query.Name)
-          res.send(result);
+          
+          res.success(response(SUCCESS,'',req.query.Name));
         }
         else{
             logger.log('info',`Delete unsuccessful${err.code}`)
@@ -130,7 +143,8 @@ exports.book_update_get = function(req, res) {
         Book.getBookDetailsID(req.params.id,function(err,result){ 
         if(result.length > 0){
             logger.log('info',`Successfully displayed book details[${JSON.stringify(result)}]`)
-          res.send(result);
+            res.success(response(SUCCESS,'',result));
+            
         }
         else{
             logger.log('info',`Book not found ${err.code}`)
@@ -149,7 +163,8 @@ exports.book_update_put = function(req, res) {
         //console.log( {changedvalue:req.body});
         else{
         logger.log('info',`Book successfully updated[${JSON.stringify(req.body)}]`)
-        res.send(req.body);
+        res.success(response(SUCCESS_CHANGE_BOOK_INFO,'',req.body));
+
         }
         
       });

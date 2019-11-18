@@ -41,16 +41,16 @@ module.exports = {
         message: 'Password successfully changed.'
       }
     },
-    ACCOUNT_CREATED: {
+    BOOK_CREATED: {
       status: 201,
       body: {
-        message: 'Account successfully created.'
+        message: 'Book successfully created.'
       }
     },
-    SUCCESS_CHANGE_COMPANY_INFO: {
+    SUCCESS_CHANGE_BOOK_INFO: {
       status: 200,
       body: {
-        message: 'Employee Company Information successfully changed.'
+        message: 'Book details successfully changed.'
       }
     },
     SUCCESS_CHANGE_BANK_INFO: {
