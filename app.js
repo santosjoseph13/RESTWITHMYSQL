@@ -5,10 +5,12 @@ const logger = require('./logger');
 var routeindex =  require('./routes/index.js');
 var bookRouter = require('./routes/book');  //Import routes for "catalog" area of site
 const bodyParser = require('body-parser')
+const cors = require('cors')
 
 
 app.use(bodyParser.json());
 app.use(morgan('short'))
+app.use(cors())
 //app.use('/actions', bookRouter);  // Add catalog routes to middleware chain.
 //app.use('/account',)
 

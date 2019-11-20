@@ -59,22 +59,22 @@ Book.getBookDetails = function(param,result){
 };
 
 Book.getBookbyName = (bookname) => {
+    return new Promise((resolve,reject )=>{
     const ACTION = '[getByID]';
     logger.log('info',`${TAG}${ACTION}[SELECT * FROM books WHERE Name=?]`);
     sql.query("SELECT * FROM books WHERE Name=?",bookname,function(err,res){
         if(err)
         {
-            console.log(err);
-            //res.send(err);
-        }
+            
+            return reject(err);
+       }
         else
         {
-
-            console.log('---------------------------------',res.length)
-            return res.length;
+            return resolve(res);
         }
 
     });
+})
 
 };
 
@@ -105,8 +105,7 @@ Book.deletebyName = function(name,result){
         if(err)
             result(err,null)
         else
-            result(null,res)
-            
+            result(null,res)           
         
     });
 

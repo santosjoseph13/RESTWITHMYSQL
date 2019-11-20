@@ -60,9 +60,9 @@ exports.book_create_post = async function(req, res) {
               logger.log('error',`Please provide book details`)
           }
   else{
-   
-      const checker =  Book.getBookbyName(new_book.Name);
-      console.log('--------------dddd',checker)
+   // handles same book same
+      const checker = await Book.getBookbyName(new_book.Name);
+      
      if(checker.length>0){
         res.error(response(BOOK_EXISTS , ''))
      }
@@ -71,7 +71,6 @@ exports.book_create_post = async function(req, res) {
     
             if (err){
                logger.log('error',`Error creating a book${err.code}`)
-               res.send(err);
             }
             else{
                logger.log('info',`New book added[${JSON.stringify(new_book)}]`)
