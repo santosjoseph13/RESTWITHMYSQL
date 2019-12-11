@@ -14,7 +14,7 @@ router.get('/create', book_controller.book_create_get);
 // POST request for creating Book.
 router.post('/create', book_controller.book_create_post);
 
-// GET request to delete Book.
+// GET request to delete Book
 router.get('/delete', book_controller.book_delete_get);
 
 // POST request to delete Book.
@@ -30,7 +30,7 @@ router.put('/update/:id', book_controller.book_update_put);
 
 router.get('/search',book_controller.book_detail);
 
-/* function(req,res){
+/* function(req,res){{}
     
 if(book_controller.book_checkBookName(req)== true)
 

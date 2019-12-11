@@ -24,7 +24,7 @@ module.exports = {
       status: 401,
       body: {
         code: -4,
-        message: 'Invalid email or password.'
+        message: 'Invalid email/username or password.'
       }
     },
     ACCOUNT_VERIFY_FAIL: {

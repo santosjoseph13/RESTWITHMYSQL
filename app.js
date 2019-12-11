@@ -2,10 +2,12 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const logger = require('./logger');
+
 var routeindex =  require('./routes/index.js');
 var bookRouter = require('./routes/book');  //Import routes for "catalog" area of site
 const bodyParser = require('body-parser')
 const cors = require('cors')
+
 
 
 app.use(bodyParser.json());

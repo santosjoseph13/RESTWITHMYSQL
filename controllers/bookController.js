@@ -1,4 +1,6 @@
 var Book = require('../models/book');
+var Account = require('../models/account')
+const jwt = require('jsonwebtoken');
 const logger = require('../logger');
 const { response, SUCCESS, EMPLOYEE_EXISTS, CREATED,BOOK_CREATED,BOOK_EXISTS, EMPLOYEE_NOT_EXISTS, SUCCESS_CHANGE_BOOK_INFO } = require('../response');
 
@@ -8,14 +10,16 @@ exports.index = function(req, res) {
 
 // Display list of all books.
 exports.book_list = function(req, res) {
-   Book.getAllBooks(function(err,result){
+ 
+    Book.getAllBooks(function(err,result){
     if(err){
         res.send(err);
         logger.log('error',`QUERY UNSUCCESSFULL`)
         
     }
     else
-   // res.send(result);
+  
+    // res.send(result);
    // console.log('All books shown',JSON.stringify(result))
     res.success(response(SUCCESS,'',result));
    });
@@ -52,6 +56,11 @@ exports.book_create_get = function(req, res) {
 
 // Handle book create on POST.
 exports.book_create_post = async function(req, res) {
+    const token= req.header('Authorization') 
+    console.log('THISIS THE TOKEN  ',token)
+    
+    const userid = jwt.decode(token,'123')
+    console.log('CONSOLE LOG USER ID',userid)
     var new_book = new Book(req.body);
     //handles null error 
     if(!new_book.Name || !new_book.Author){
@@ -67,14 +76,21 @@ exports.book_create_post = async function(req, res) {
         res.error(response(BOOK_EXISTS , ''))
      }
     else{
-        Book.createBook(new_book, function(err, result) {
+        Book.createBook(new_book, async function(err, result) {
     
             if (err){
                logger.log('error',`Error creating a book${err.code}`)
             }
             else{
+
+                let username = await Account.getAccountbyID(userid)
+                console.log('-----------eto ay galing sa bookcont',username[0].username)
+
+
+
+
                logger.log('info',`New book added[${JSON.stringify(new_book)}]`)
-               res.success(response(BOOK_CREATED,'',new_book));
+               res.success(response(BOOK_CREATED,'',{new_book,user:username[0].username}));
            
                }
            });
@@ -161,7 +177,7 @@ exports.book_update_put = function(req, res) {
         }
         //console.log( {changedvalue:req.body});
         else{
-        logger.log('info',`Book successfully updated[${JSON.stringify(req.body)}]`)
+       // logger.log('info',`Book successfully updated[${JSON.stringify(req.body)}]`)
         res.success(response(SUCCESS_CHANGE_BOOK_INFO,'',req.body));
 
         }
