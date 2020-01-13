@@ -18,7 +18,7 @@ router.post('/create', book_controller.book_create_post);
 router.get('/delete', book_controller.book_delete_get);
 
 // POST request to delete Book.
-router.delete('/delete', book_controller.book_delete_delete);
+router.delete('/delete/:id', book_controller.book_delete_delete);
 
 // GET request to update Book.
 router.get('/update/:id', book_controller.book_update_get);
@@ -29,6 +29,16 @@ router.put('/update/:id', book_controller.book_update_put);
 // GET request for one Book.
 
 router.get('/search',book_controller.book_detail);
+
+//router.post('/submitexam',book_controller.submitexam);
+
+//router.get('/score/:id',book_controller.getscore);
+
+router.get('/answer/:id',book_controller.get_answer);
+
+router.get('/questions/:id',book_controller.get_questions);
+
+router.get('/choices/:id',book_controller.get_choices);
 
 /* function(req,res){{}
     

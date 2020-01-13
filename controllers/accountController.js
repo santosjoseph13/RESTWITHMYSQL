@@ -60,7 +60,7 @@ exports.accountlogin_post = async function (req, result) {
         logger.log('error', `Please provide login details`)
     }
     else {
-        // handles same book same
+        // handles same book sam
         var checker = await Account.getAccount(new_login.userName);
         console.log("checkerssas", checker)
         if (checker.length > 0) {

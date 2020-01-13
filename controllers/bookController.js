@@ -2,7 +2,7 @@ var Book = require('../models/book');
 var Account = require('../models/account')
 const jwt = require('jsonwebtoken');
 const logger = require('../logger');
-const { response, SUCCESS, EMPLOYEE_EXISTS, CREATED,BOOK_CREATED,BOOK_EXISTS, EMPLOYEE_NOT_EXISTS, SUCCESS_CHANGE_BOOK_INFO } = require('../response');
+const { response, SUCCESS, EMPLOYEE_EXISTS, CREATED,BOOK_CREATED,BOOK_EXISTS, EMPLOYEE_NOT_EXISTS, SUCCESS_CHANGE_BOOK_INFO,UNAUTHORIZED } = require('../response');
 
 exports.index = function(req, res) {
     res.send('NOT IMPLEMENTED: Site Home Page');
@@ -54,13 +54,75 @@ exports.book_create_get = function(req, res) {
  
 };
 
+
+// Display answer form on GET.
+exports.get_answer = function(req, res) {
+    Book.getAnswer(req.params.id,function(err,result){      
+        console.log('Answer ID foundsss',req.params) 
+     
+        if(result.length > 0){
+            logger.log('info',`Successfully searched answer:[${JSON.stringify(result)}]`)
+            console.log('id affected', req.params.id)
+            console.log('id affected', result[0])
+          res.success(response(SUCCESS,'',result[0]));
+        }
+        else{
+            logger.log('error',`Get unsuccessful${err}`)
+            console.log('Answer ID found',result)                   
+        }             
+  });
+ 
+};
+
+exports.get_questions = function(req, res) {
+    Book.getQuestions(req.params.id,function(err,result){      
+        console.log('Question ID foundsss',req.params) 
+     
+        if(result.length > 0){
+            logger.log('info',`Successfully searched questions:[${JSON.stringify(result)}]`)
+            console.log('id affectedss', req.params.id)
+            console.log('id affectededdd', result)
+          res.success(response(SUCCESS,'',result));
+        }
+        else{
+            logger.log('error',`Get unsuccessful${err}`)
+            console.log('Question ID found',result) 
+            res.error(response(EMPLOYEE_NOT_EXISTS,'',result));                  
+        }             
+  });
+ 
+};
+
+exports.get_choices = function(req, res) {
+    Book.getChoices(req.params.id,function(err,result){      
+        console.log('Choices ID foundsss',req.params) 
+     
+        if(result.length > 0){
+            logger.log('info',`Successfully searched questions:[${JSON.stringify(result)}]`)
+            console.log('id affected', req.params.id)
+            console.log('id affected', result[0])
+          res.success(response(SUCCESS,'',result));
+        }
+        else{
+            logger.log('error',`Get unsuccessful${err}`)
+            console.log('Choices ID found',result)    
+            res.error(response(EMPLOYEE_NOT_EXISTS,'',result));               
+        }             
+  });
+ 
+};
+
 // Handle book create on POST.
 exports.book_create_post = async function(req, res) {
-    const token= req.header('Authorization') 
-    console.log('THISIS THE TOKEN  ',token)
-    
-    const userid = jwt.decode(token,'123')
-    console.log('CONSOLE LOG USER ID',userid)
+  let userid =  Book.checkToken(req)
+        if(userid==false){
+            res.error(response(UNAUTHORIZED , ''))
+        }
+        else{
+            
+  
+
+    console.log('CONSOLE LOG USER ID',req.body)
     var new_book = new Book(req.body);
     //handles null error 
     if(!new_book.Name || !new_book.Author){
@@ -84,13 +146,13 @@ exports.book_create_post = async function(req, res) {
             else{
 
                 let username = await Account.getAccountbyID(userid)
-                console.log('-----------eto ay galing sa bookcont',username[0].username)
+                console.log('-----------eto ay galing sa bookcont',result)
 
 
 
 
                logger.log('info',`New book added[${JSON.stringify(new_book)}]`)
-               res.success(response(BOOK_CREATED,'',{new_book,user:username[0].username}));
+               res.success(response(BOOK_CREATED,'',{new_book,user:username[0].username,id:result.insertId}));
            
                }
            });
@@ -99,13 +161,14 @@ exports.book_create_post = async function(req, res) {
         }
     
     }
+}
 
     
 };
 
 
 
-//Checks if the parameters are met
+//Checks if the parameters are me
 exports.book_checkBookName = function (req){
     
     if(req.query.Name.length  < 1)
@@ -136,18 +199,24 @@ exports.book_delete_get = function(req, res) {
     });
 };
 
-// Handle book delete on POST.
+// Handle book delete on POST
 exports.book_delete_delete = function(req, res) {
-    Book.deletebyName(req.query.Name,function(err,result){      
+    const token= req.header('Authorization') 
+ 
+    
+    const id = jwt.decode(token,'123')
+    console.log('id affected', id)
+    Book.deletebyID(req.params.id,function(err,result){      
+
         if(result.affectedRows > 0){
-            logger.log('info',`Successfully deleted Name:[${JSON.stringify(req.query.Name)}]`)
-            console.log('row affected', req.query.Name)
+            logger.log('info',`Successfully deleted Name:[${JSON.stringify(result)}]`)
+            console.log('id affected', req.params.id)
           
-          res.success(response(SUCCESS,'',req.query.Name));
+          res.success(response(SUCCESS,'',req.params.id));
         }
         else{
-            logger.log('info',`Delete unsuccessful${err.code}`)
-            console.log('No user found',result)                   
+            logger.log('info',`Delete unsuccessful${err}`)
+            console.log('ID user found',req.params.id)                   
         }             
   });
     
