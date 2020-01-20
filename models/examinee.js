@@ -144,6 +144,28 @@ Examinee.getAccountbyID = (examinee_id) => {
 };
 
 
+Examinee.submitAnswer = (exam_id,answer)=>{
+    console.log("examid",exam_id)
+    console.log("answer",answer)
+    return new Promise((resolve,reject )=>{
+        const ACTION = '[submtAnswer]';
+        logger.log('info',`${TAG}${ACTION}[SELECT * FROM books WHERE id=?]`);
+        sql.query("INSERT INTO  answers (`examinee_id`,`exam_id`,`answer`) VALUES (2,?,?)",[exam_id,answer],function(err,res){
+            if(err)
+            {
+                
+                return reject(err);
+           }
+            else
+            {
+                return resolve(res);
+            }
+    
+        });
+    })
+    };
+
+
 
 
 module.exports = Examinee;

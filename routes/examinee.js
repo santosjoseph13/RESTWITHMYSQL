@@ -9,7 +9,7 @@ router.post('/register', examinee_controller.examinee_create_post);
 router.post('/login', examinee_controller.examinee_login_post);
 router.post('/update', examinee_controller.examinee_update_put);
 router.post('/delete', examinee_controller.examinee_delete_post);
-router.post('/submitexam', examinee_controller.examinee_submit_post);
+router.post('/submitexam/:id', examinee_controller.examinee_submit_post);
 
 
 module.exports = router;

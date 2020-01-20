@@ -1,7 +1,12 @@
+var httpContext = require('express-http-context');
+var requestId = httpContext.get('requestId');
+console.log("--------------------ddd",requestId)
 module.exports = {
+  
     INTERNAL_SERVER_ERROR: {
       status: 500,
       body: {
+        
         code: -1,
         message: 'Internal server error.'
       }
@@ -51,6 +56,7 @@ module.exports = {
     ENDPOINT_NOT_FOUND: {
       status: 404,
       body: {
+        id:0,
         code: -8,
         message: 'Endpoint not found.'
       }
@@ -93,6 +99,7 @@ module.exports = {
     EMPLOYEE_NOT_EXISTS: {
       status: 404,
       body: {
+        id:"",
         code: -14,
         message: 'Employee not existing.'
       }

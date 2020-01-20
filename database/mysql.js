@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
 })
 connection.connect(function(err,restdb){
     if (err) throw logger.log('error',`${err.code}`);
-    else logger.log('info',"Connected to DB")
+    else    logger.log('info', `[Connected to DB]`);
     
     
 })
