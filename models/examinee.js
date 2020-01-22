@@ -165,6 +165,30 @@ Examinee.submitAnswer = (exam_id,answer)=>{
     })
     };
 
+Examinee.addEsssay=(id,body)=>{
+  
+    return new Promise((resolve,reject )=>{
+        const ACTION = '[submtAnswer]';
+        console.log('------------------------------qid',id)
+        console.log('------------------------------bans',body[0])
+        console.log('------------------------------bans',body[1])
+        console.log('------------------------------bansssss',body)
+        logger.log('info',`${TAG}${ACTION}[SELECT * FROM books WHERE id=?]`);
+        sql.query("INSERT INTO  essay (examinee_id,text,question_id) VALUES (?,?,?),(?,?,?),(?,?,?),(?,?,?)"
+        ,[id,body.text[0],1,id,body.text[1],2,id,body.text[2],3,id,body.text[3],4],function(err,res){
+            if(err)
+            {
+                console.log("ERRRRRRRRRRRRRRRRRRRRRRRR",err)
+                return reject(err);
+           }
+            else
+            {   
+                 resolve(res);
+            }
+    
+        });
+    })
+    };
 
 
 

@@ -23,6 +23,22 @@ console.log("BODDDYYYYY",req.query.job)
     });
 };
 
+exports.examinee_submitessay_post = function(req,res){
+    console.log('esssaayyy------------------',req.body)
+    Examinee.addEsssay(req.params.id,{text:req.body}).then(result => {
+        console.log('esssaayyy------------------',result)
+        if(result.affectedRows > 0) {
+            return res.success(response(SUCCESS, '', result));
+        }else {
+            return res.error(response(EMPLOYEE_NOT_EXISTS, ''));
+        }
+    })
+    .catch(err => {
+        res.error(err);
+    });
+}
+
+
 exports.examinee_update_put = function (req, res) {
     res.send('update');
 };

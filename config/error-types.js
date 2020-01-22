@@ -4,9 +4,8 @@ console.log("--------------------ddd",requestId)
 module.exports = {
   
     INTERNAL_SERVER_ERROR: {
-      status: 500,
-      body: {
-        
+      status: 400,
+      body: {        
         code: -1,
         message: 'Internal server error.'
       }

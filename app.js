@@ -40,7 +40,7 @@ app.use(function(req, res, next) {
     };
   
     res.error = function(error) {
-     error.body.id = requestId
+     
       logger.log('error', `[${res.req.method}][${req.originalUrl}][${requestId}]`, error);
       res.status(error.status).json(error.body);
     };

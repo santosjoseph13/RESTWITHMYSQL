@@ -10,6 +10,8 @@ router.post('/login', examinee_controller.examinee_login_post);
 router.post('/update', examinee_controller.examinee_update_put);
 router.post('/delete', examinee_controller.examinee_delete_post);
 router.post('/submitexam/:id', examinee_controller.examinee_submit_post);
+router.post('/submitessay/:id', examinee_controller.examinee_submitessay_post);
+
 
 
 module.exports = router;
