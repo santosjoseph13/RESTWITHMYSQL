@@ -4,11 +4,11 @@
 ​
 ## URLs
 ​
-| Environment | Domain      |
-| ----------- | ----------- |
-| UAT         | Coming soon |
-| Prod        | Coming soon |
-​
+
+| Environment | Domain |
+|----------- | ----------- |
+| UAT | Coming soon |
+| Prod | Coming soon |​
 # Contents
 ​
 
@@ -21,25 +21,23 @@
 ​
 ### <a name="endpoints"></a> Endpoints
 ​
-| Method   | Resource                                           | Description                         |
-| -------- | ---------------------------------------------------| ----------------------------------- |
-| **GET**  | [`/plans/:planCode?&vendor=?`](#getplandetails)    | Get plan details by using plan code |
-| **POST** | [`/orders`](#postplaceorder)                       | Post order                          |
-| **POST** | [`/orders/cancel`](#postcancelorder)               | Post cancel order                   |
-​
+
+| Method   | Resource                                           | Description                         |  
+| -------- | ---------------------------------------------------| ----------------------------------- |  
+| **GET**  | [`/plans/:planCode?&vendor=?`](#getplandetails)    | Get plan details by using plan code |  
+| **POST** | [`/orders`](#postplaceorder)                       | Post order                          |  
+| **POST** | [`/orders/cancel`](#postcancelorder)               | Post cancel order                   |​
 ### <a name="getplandetails"></a> `GET` /plans/:planCode?&vendor=?
 ​
 - Get plan details using planCode
 ​
 #### Request Path
 ​
+
 | Query    | Tags  | Field Type  | Length  | Description                                                |
 | -------- | ----- | ----------- | ------- | ---------------------------------------------------------- |
 |:planCode | params|   varchar   |   20    | Plan code to get the specific plan details                 |
-| vendor   | query |   varchar   |   50    | Channel Id/Partner Id provided by UBP to InLife - REQUIRED |
-
-
-​
+| vendor   | query |   varchar   |   50    | Channel Id/Partner Id provided by UBP to InLife - REQUIRED |​
 #### Sample Request
 ​
 {url} /plans/:abc?vendor=10
@@ -49,10 +47,10 @@
 ​
 #### Error Codes
 ​
+
 | Status | Code | Description                               |
 | ------ | ---- | ----------------------------------------- |
-| 422    | --   | Error while validating request.           |
-​
+| 422    | --   | Error while validating request.           |​
 #### Sample Error Response
 ​
 ```json
@@ -76,6 +74,7 @@
 ​
 #### Request Path
 ​
+
 | Query                  | Tags   | Field Type                | Length | Description                                                          |
 |------------------------|--------|---------------------------|--------|----------------------------------------------------------------------|
 | orderId                | params | varchar                   | 50     | Order id provided by channel/partner - REQUIRED                      |
@@ -112,9 +111,7 @@
 | address5               | body   | varchar                   | 100    | Address 5                                                            |
 | city                   | body   | varchar                   | 50     | Municipality                                                         |
 | postalCode             | body   | varchar                   | 10     | Postal Code                                                          |
-| country                | body   | varchar                   | 50     | Country                                                              |
-
-​
+| country                | body   | varchar                   | 50     | Country                                                              |​
 #### Sample Request
 ​
 {url}/orders
@@ -137,10 +134,10 @@ body
 ​
 #### Error Codes
 ​
+
 | Status | Code | Description                               |
 | ------ | ---- | ----------------------------------------- |
-| 422    | ---- | Error while validating request.           |
-​
+| 422    | ---- | Error while validating request.           |​
 #### Sample Error Response
 ​
 ​
@@ -208,6 +205,7 @@ body
 #### Request Path
 
 ​
+
 | Query                 | Tags | Field Type               | Length | Description                                                                                                |
 |-----------------------|------|--------------------------|--------|------------------------------------------------------------------------------------------------------------|
 | orderItem             | body | Object (array of orders) |        | OrderItem Object                                                                                           |
@@ -217,8 +215,7 @@ body
 | premium               | body | numeric                  | 18,2   | Premium of each plan availed - required if a particular item will be cancelled                             |
 | lineOfBusiness        | body | varchar                  | 20     | line Of Business of the plan - required if a particular item will be cancelled                             |
 | reasonForCancellation | body | varchar                  | 500    | reason for cancellation - REQUIRED                                                                         |
-| vendor                | body | varchar                  | 100    | Channel Id/Partner Id provided by UBP to InLife - REQUIRED                                                 |
-​
+| vendor                | body | varchar                  | 100    | Channel Id/Partner Id provided by UBP to InLife - REQUIRED                                                 |​
 #### Sample Request
 ​
 {url}/orders/cancel
@@ -233,10 +230,10 @@ body
 ​
 #### Error Codes
 ​
+
 | Status | Code | Description                               |
 | ------ | ---- | ----------------------------------------- |
-| 422    | ---- | Error while validating request.           |
-​
+| 422    | ---- | Error while validating request.           |​
 #### Sample Error Response
 ​
 ```json
