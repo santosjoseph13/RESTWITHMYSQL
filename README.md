@@ -24,7 +24,7 @@
 
 | Method   | Resource                                           | Description                         |  
 | -------- | ---------------------------------------------------| ----------------------------------- |  
-| **GET**  | [`/plans/:planCode?&vendor=?`](#getplandetails)    | Get plan details by using plan code |  
+| **POST**  | [`/plans/search`](#getplandetails)    | Get plan details by using plan code |  
 | **POST** | [`/orders`](#postplaceorder)                       | Post order                          |  
 | **POST** | [`/orders/cancel`](#postcancelorder)               | Post cancel order                   |​
 ### <a name="getplandetails"></a> `GET` /plans/:planCode?&vendor=?
@@ -36,12 +36,55 @@
 
 | Query    | Tags  | Field Type  | Length  | Description                                                |
 | -------- | ----- | ----------- | ------- | ---------------------------------------------------------- |
-|:planCode | params|   varchar   |   20    | Plan code to get the specific plan details                 |
-| vendor   | query |   varchar   |   50    | Channel Id/Partner Id provided by UBP to InLife - REQUIRED |​
+| planCode | body |   varchar   |   1000    | Plan code to get the specific plan details                 |
+| vendor   | body |   varchar   |   1000    | Channel Id/Partner Id provided by UBP to InLife - REQUIRED |​
 #### Sample Request
 ​
-{url} /plans/:abc?vendor=10
+{url} /plans/search
+```json
+{
+    "vendor":"shopee",
+    "planCode":"SHPGGT1234"  
+    	    
+}
+```
 ​
+#### Sample Success Response
+​
+```json
+{
+    "msg": "Success",
+    "result": {
+        "planCode": "SHPGGT1234",
+        "planName": "SAMPLECGAPFAMILY",
+        "premium": "250.00",
+        "stocks": "99",
+        "planLogo": "https://insularlife.com.ph/img.jpg",
+        "planBanner": "https://insularlife.com/ph/img.jpg",
+        "planDetails": "https://insularlife.com/ph/img.jpg",
+        "activationProcess": "https://insularlife.com/ph/img.jpg",
+        "freeLook": "https://insularlife.com/ph/img.jpg",
+        "additionalInfo": "https://insularlife.com/ph/img.jpg",
+        "refund": "https://insularlife.com/ph/img.jpg",
+        "planExclusions": "https://insularlife.com/ph/img.jpg",
+        "termsandconditions": "https://insularlife.com/ph/img.jpg",
+        "qrCode": "https://insularlife.com/ph/img.jpg",
+        "lineOfBusiness": "GROUP",
+        "planWidget": [
+            {
+                "widget": "https://insularlife.com/ph/img.jpg"
+            }
+        ],
+        "planBenefits": [
+            {
+                "benefit": "https://insularlife.com/ph/img.jpg"
+            }
+        ],
+        "responseCode": 200,
+        "responseDesc": "Success"
+    }
+}
+```
 ​
 ## <a name="errorresponses"></a> Error Responses
 ​
@@ -92,11 +135,11 @@
 | cardPaymentType        | body   | varchar                   | 10     | Card Payment typee.g. Credit or Debit                                |
 | currency               | body   | varchar                   | 3      | Currency of paymente.g. PHP or USD                                   |
 | transactionRefNo       | body   | varchar                   | 20     | Reference Number from Bank                                           |
-| memberFirstName        | body   | varchar                   | 100    | Member firstname from channel site                                   |
-| memberMiddleName       | body   | varchar                   | 100    | Member middlename from channel site                                  |
-| memberLastName         | body   | varchar                   | 100    | Member lastname from channel site                                    |
-| memberEmailAddress     | body   | varchar                   | 50     | Member emailaddress from channel site - REQUIRED                     |
-| memberMobileNo         | body   | varchar                   | 20     | Member mobile number from channel site - REQUIRED                    |
+| memberFirstName        | body   | varchar                   | 1000    | Member firstname from channel site                                   |
+| memberMiddleName       | body   | varchar                   | 1000    | Member middlename from channel site                                  |
+| memberLastName         | body   | varchar                   | 1000    | Member lastname from channel site                                    |
+| memberEmailAddress     | body   | varchar                   | 1000     | Member emailaddress from channel site - REQUIRED                     |
+| memberMobileNo         | body   | varchar                   | 1000     | Member mobile number from channel site - REQUIRED                    |
 | membershipDate         | body   | datetime                  |        | Date of membership in a channel                                      |
 | voucherId              | body   | varchar                   | 20     | Voucher Id issued by channel                                         |
 | voucherAmount          | body   | numeric                   | 18,2   | Voucher amount issued by channel                                     |
@@ -104,14 +147,14 @@
 | voucherStatus          | body   | varchar                   | 20     | Voucher Status issued by channel                                     |
 | vendor                 | body   | ALPHANUMERIC              | 50     | Channel Id/Partner Id provided by UBP to InLife - REQUIRED           |
 | address                | body   | Object (array of address) |        |                                                                      |
-| address1               | body   | varchar                   | 100    | Address 1                                                            |
-| address2               | body   | varchar                   | 100    | Address 2                                                            |
-| address3               | body   | varchar                   | 100    | Address 3                                                            |
-| address4               | body   | varchar                   | 100    | Address 4                                                            |
-| address5               | body   | varchar                   | 100    | Address 5                                                            |
-| city                   | body   | varchar                   | 50     | Municipality                                                         |
-| postalCode             | body   | varchar                   | 10     | Postal Code                                                          |
-| country                | body   | varchar                   | 50     | Country                                                              |​
+| address1               | body   | varchar                   | 1000    | Address 1                                                            |
+| address2               | body   | varchar                   | 1000    | Address 2                                                            |
+| address3               | body   | varchar                   | 1000    | Address 3                                                            |
+| address4               | body   | varchar                   | 1000    | Address 4                                                            |
+| address5               | body   | varchar                   | 1000    | Address 5                                                            |
+| city                   | body   | varchar                   | 1000     | Municipality                                                         |
+| postalCode             | body   | varchar                   | 1000     | Postal Code                                                          |
+| country                | body   | varchar                   | 1000     | Country                                                              |​
 #### Sample Request
 ​
 {url}/orders
@@ -120,16 +163,69 @@ body
 
 ```json
 ​{
-    "orderId":"1",
-    "totalTransactionAmount": "1000000000000000000000000",
-    "cancelRequestdatetime":	"2020-01-27",
-    "reasonForCancellation": "sda@qes.com",
-    "memberMobileNo":"2132423",
-    "vendor":"2",
-    "OrderItem":[{"id":1}]    
+	"orderId": "SHP2020011700001",
+	"OrderItem": [
+		{
+			"id": "SHP2020011700001-A",
+			"planCode": "SHPGGT1234",
+			"planName": "SAMPLECGAPFAMILY",
+			"premium": "250.00",
+			"lineOfBusiness": "GROUP"
+		},
+		{
+			"id": "SHP2020011700001-B",
+			"planCode": "SHPGGT5678",
+			"planName": "SAMPLECGAPJUNIOR",
+			"premium": "1250.00",
+			"lineOfBusiness": "GROUP"
+		}
+	],
+	"totalTransactionAmount": 1500.00,
+	"transactionDateTime": "2020-01-17T01:19:16Z",
+	"approvalCode": "005718",
+	"cardHolderName": "UBP ACQUIRER TEST/CARD 01",
+	"issuingBank": "UBP",
+	"cardNo": "1234 12XX XXXX 5678",
+	"cardPaymentType": "Credit",
+	"currency": "PHP",
+	"transactionRefNo": "012345678901",
+	"memberFirstName": "CARDO",
+	"memberMiddleName": "COCO",
+	"memberLastName": "DALISAY",
+	"memberEmailAddress": "angprobinsyano@gmail.com",
+	"memberMobileNo": "09222222222",
+	"membershipDate": "2020-01-17T01:19:16Z",
+	"voucherId": "shp100",
+	"voucherAmount": 100.00,
+	"voucherDateTime": "2020-01-17T01:19:16Z",
+	"voucherStatus": "ACTIVE",
+	"vendor": "SHOPEE"
 }
 ```
-
+#### Sample Success Response
+​
+```json
+{
+    "msg": "Success",
+    "result": {
+        "activationURL": [
+            {
+                "orderItemID": "SHP2020011700001-A",
+                "URL": "https://sampleestore.insularlife.com.ph/shopee/Registration/Register?ReferenceKey=encryptedreferencekey",
+                "responseCode": 200,
+                "responseDesc": "Success"
+            },
+            {
+                "orderItemID": "SHP2020011700001-B",
+                "URL": "https://sampleestore.insularlife.com.ph/shopee/Registration/Register?ReferenceKey=encryptedreferencekey",
+                "responseCode": 200,
+                "responseDesc": "Success"
+            }
+        ]
+    }
+}
+```
+​
 ## <a name="errorresponses"></a> Error Responses
 ​
 #### Error Codes
@@ -222,8 +318,67 @@ body
 
 ```json
 {
-  "OrderItem":[{"id":1}]
-}    
+	"orderId": "SHP2020011700001",
+	"OrderItem": [
+		{
+			"id": "SHP2020011700001-A",
+			"planCode": "SHPGGT1234",
+			"planName": "SAMPLECGAPFAMILY",
+			"premium": "250.00",
+			"lineOfBusiness": "GROUP"
+		},
+		{
+			"id": "SHP2020011700001-A",
+			"planCode": "SHPGGT1234",
+			"planName": "SAMPLECGAPFAMILY",
+			"premium": "250.00",
+			"lineOfBusiness": "GROUP"
+		}
+	],
+	"reasonForCancellation": "Change of plan to avail",
+	"cancelRequestDateTime": "2020-01-17T01:19:16Z",
+	"param1": "reserved1",
+	"param2": "reserved2",
+	"param3": "reserved3",
+	"param4": "reserved4",
+	"param5": "reserved5",
+	"vendor": "SHOPEE"
+}   
+```
+#### Sample Success Response
+​
+```json
+{
+    "msg": "Success",
+    "result": {
+        "orderItem": [
+            {
+                "Id": "SHP2020011700001-A",
+                "planCode": "SHPGGT1234",
+                "planName": "SAMPLECGAPFAMILY",
+                "premium": "250.00",
+                "reasonForCancellation": "Change of plan to avail",
+                "cancelRequestDateTime": "2020-01-17T01:19:16Z",
+                "lineOfBusiness": "GROUP",
+                "itemStatus": "CANCELLED",
+                "responseCode": 200,
+                "responseDesc": "Success"
+            },
+            {
+                "Id": "SHP2020011700001-A",
+                "planCode": "SHPGGT1234",
+                "planName": "SAMPLECGAPFAMILY",
+                "premium": "250.00",
+                "reasonForCancellation": "Change of plan to avail",
+                "cancelRequestDateTime": "2020-01-17T01:19:16Z",
+                "lineOfBusiness": "GROUP",
+                "itemStatus": "CANCELLED",
+                "responseCode": 200,
+                "responseDesc": "Success"
+            }
+        ]
+    }
+}
 ```
 
 ## <a name="errorresponses"></a> Error Responses
