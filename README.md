@@ -27,7 +27,7 @@
 | **POST**  | [`/plans/search`](#getplandetails)    | Get plan details by using plan code |  
 | **POST** | [`/orders`](#postplaceorder)                       | Post order                          |  
 | **POST** | [`/orders/cancel`](#postcancelorder)               | Post cancel order                   |​
-### <a name="getplandetails"></a> `GET` /plans/:planCode?&vendor=?
+### <a name="getplandetails"></a> `GET` /plans/search
 ​
 - Get plan details using planCode
 ​
@@ -53,35 +53,9 @@
 ​
 ```json
 {
-    "msg": "Success",
+    "msg": "Success GCOMM API",
     "result": {
-        "planCode": "SHPGGT1234",
-        "planName": "SAMPLECGAPFAMILY",
-        "premium": "250.00",
-        "stocks": "99",
-        "planLogo": "https://insularlife.com.ph/img.jpg",
-        "planBanner": "https://insularlife.com/ph/img.jpg",
-        "planDetails": "https://insularlife.com/ph/img.jpg",
-        "activationProcess": "https://insularlife.com/ph/img.jpg",
-        "freeLook": "https://insularlife.com/ph/img.jpg",
-        "additionalInfo": "https://insularlife.com/ph/img.jpg",
-        "refund": "https://insularlife.com/ph/img.jpg",
-        "planExclusions": "https://insularlife.com/ph/img.jpg",
-        "termsandconditions": "https://insularlife.com/ph/img.jpg",
-        "qrCode": "https://insularlife.com/ph/img.jpg",
-        "lineOfBusiness": "GROUP",
-        "planWidget": [
-            {
-                "widget": "https://insularlife.com/ph/img.jpg"
-            }
-        ],
-        "planBenefits": [
-            {
-                "benefit": "https://insularlife.com/ph/img.jpg"
-            }
-        ],
-        "responseCode": 200,
-        "responseDesc": "Success"
+        "id": 101
     }
 }
 ```
@@ -206,22 +180,9 @@ body
 ​
 ```json
 {
-    "msg": "Success",
+    "msg": "Success GCOMM API",
     "result": {
-        "activationURL": [
-            {
-                "orderItemID": "SHP2020011700001-A",
-                "URL": "https://sampleestore.insularlife.com.ph/shopee/Registration/Register?ReferenceKey=encryptedreferencekey",
-                "responseCode": 200,
-                "responseDesc": "Success"
-            },
-            {
-                "orderItemID": "SHP2020011700001-B",
-                "URL": "https://sampleestore.insularlife.com.ph/shopee/Registration/Register?ReferenceKey=encryptedreferencekey",
-                "responseCode": 200,
-                "responseDesc": "Success"
-            }
-        ]
+        "id": 101
     }
 }
 ```
@@ -349,34 +310,9 @@ body
 ​
 ```json
 {
-    "msg": "Success",
+    "msg": "Success GCOMM API",
     "result": {
-        "orderItem": [
-            {
-                "Id": "SHP2020011700001-A",
-                "planCode": "SHPGGT1234",
-                "planName": "SAMPLECGAPFAMILY",
-                "premium": "250.00",
-                "reasonForCancellation": "Change of plan to avail",
-                "cancelRequestDateTime": "2020-01-17T01:19:16Z",
-                "lineOfBusiness": "GROUP",
-                "itemStatus": "CANCELLED",
-                "responseCode": 200,
-                "responseDesc": "Success"
-            },
-            {
-                "Id": "SHP2020011700001-A",
-                "planCode": "SHPGGT1234",
-                "planName": "SAMPLECGAPFAMILY",
-                "premium": "250.00",
-                "reasonForCancellation": "Change of plan to avail",
-                "cancelRequestDateTime": "2020-01-17T01:19:16Z",
-                "lineOfBusiness": "GROUP",
-                "itemStatus": "CANCELLED",
-                "responseCode": 200,
-                "responseDesc": "Success"
-            }
-        ]
+        "id": 101
     }
 }
 ```
