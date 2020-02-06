@@ -96,11 +96,11 @@
 |------------------------|--------|---------------------------|--------|----------------------------------------------------------------------|
 | orderId                | params | varchar                   | 50     | Order id provided by channel/partner - REQUIRED                      |
 | orderItem              | body   | Object (array of orders)  |        | OrderItem Object                                                     |
-| id                     | body   | varchar                   | 50     | Order item id provided by channel/partner/vendor - REQUIRED          |
-| planCode               | body   | varchar                   | 20     | plan id - REQUIRED                                                   |
-| planName               | body   | varchar                   | 50     | plan Name - REQUIRED                                                 |
-| premium                | body   | numeric                   | 18,2   | Premium of each plan availed - REQUIRED                              |
-| lineOfBusiness         | body   | varchar                   | 20     | line Of Business of the plan - REQUIRED                              |
+| * id                     | body   | varchar                   | 50     | Order item id provided by channel/partner/vendor - REQUIRED          |
+|* planCode               | body   | varchar                   | 20     | plan id - REQUIRED                                                   |
+|* planName               | body   | varchar                   | 50     | plan Name - REQUIRED                                                 |
+|* premium                | body   | numeric                   | 18,2   | Premium of each plan availed - REQUIRED                              |
+|* lineOfBusiness         | body   | varchar                   | 20     | line Of Business of the plan - REQUIRED                              |
 | totalTransactionAmount | body   | numeric                   | 18,2   | Total amount paid for the orders - REQUIRED                          |
 | approvalCode           | body   | varchar                   | 20     | Approval code from the bank                                          |
 | cardHolderName         | body   | varchar                   | 100    | Card Holder Name                                                     |
@@ -121,14 +121,14 @@
 | voucherStatus          | body   | varchar                   | 20     | Voucher Status issued by channel                                     |
 | vendor                 | body   | ALPHANUMERIC              | 50     | Channel Id/Partner Id provided by UBP to InLife - REQUIRED           |
 | address                | body   | Object (array of address) |        |                                                                      |
-| address1               | body   | varchar                   | 1000    | Address 1                                                            |
-| address2               | body   | varchar                   | 1000    | Address 2                                                            |
-| address3               | body   | varchar                   | 1000    | Address 3                                                            |
-| address4               | body   | varchar                   | 1000    | Address 4                                                            |
-| address5               | body   | varchar                   | 1000    | Address 5                                                            |
-| city                   | body   | varchar                   | 1000     | Municipality                                                         |
-| postalCode             | body   | varchar                   | 1000     | Postal Code                                                          |
-| country                | body   | varchar                   | 1000     | Country                                                              |​
+| * address1               | body   | varchar                   | 1000    | Address 1                                                            |
+| * address2               | body   | varchar                   | 1000    | Address 2                                                            |
+| * address3               | body   | varchar                   | 1000    | Address 3                                                            |
+| * address4               | body   | varchar                   | 1000    | Address 4                                                            |
+| * address5               | body   | varchar                   | 1000    | Address 5                                                            |
+| * city                   | body   | varchar                   | 1000     | Municipality                                                         |
+| * postalCode             | body   | varchar                   | 1000     | Postal Code                                                          |
+| * country                | body   | varchar                   | 1000     | Country                                                              |​
 #### Sample Request
 ​
 {url}/orders
@@ -266,12 +266,12 @@ body
 | Query                 | Tags | Field Type               | Length | Description                                                                                                |
 |-----------------------|------|--------------------------|--------|------------------------------------------------------------------------------------------------------------|
 | orderItem             | body | Object (array of orders) |        | OrderItem Object                                                                                           |
-| id                    | body | varchar                  | 50     | Order item id provided by channel/partner/vendor - Optional fill if a particular item will be cancelled    |
-| planCode              | body | varchar                  | 20     | plan id - will only be required if id is provided                                                          |
-| planName              | body | varchar                  | 50     | plan Name - required if a particular item will be cancelled                                                |
-| premium               | body | numeric                  | 18,2   | Premium of each plan availed - required if a particular item will be cancelled                             |
-| lineOfBusiness        | body | varchar                  | 20     | line Of Business of the plan - required if a particular item will be cancelled                             |
-| reasonForCancellation | body | varchar                  | 500    | reason for cancellation - REQUIRED                                                                         |
+| * id                    | body | varchar                  | 50     | Order item id provided by channel/partner/vendor - Optional fill if a particular item will be cancelled    |
+| * planCode              | body | varchar                  | 20     | plan id - will only be required if id is provided                                                          |
+| * planName              | body | varchar                  | 50     | plan Name - required if a particular item will be cancelled                                                |
+| * premium               | body | numeric                  | 18,2   | Premium of each plan availed - required if a particular item will be cancelled                             |
+| * lineOfBusiness        | body | varchar                  | 20     | line Of Business of the plan - required if a particular item will be cancelled                             |
+|* reasonForCancellation | body | varchar                  | 500    | reason for cancellation - REQUIRED                                                                         |
 | vendor                | body | varchar                  | 100    | Channel Id/Partner Id provided by UBP to InLife - REQUIRED                                                 |​
 #### Sample Request
 ​
