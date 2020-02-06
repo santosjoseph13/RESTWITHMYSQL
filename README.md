@@ -24,10 +24,10 @@
 
 | Method   | Resource                                           | Description                         |  
 | -------- | ---------------------------------------------------| ----------------------------------- |  
-| **POST**  | [`/plans/search`](#getplandetails)    | Get plan details by using plan code |  
+| **POST**  | [`/plans/search`](#postplandetails)    | Get plan details by using plan code |  
 | **POST** | [`/orders`](#postplaceorder)                       | Post order                          |  
 | **POST** | [`/orders/cancel`](#postcancelorder)               | Post cancel order                   |​
-### <a name="getplandetails"></a> `GET` /plans/search
+### <a name="postplandetails"></a> `POST` /plans/search
 ​
 - Get plan details using planCode
 ​
@@ -67,7 +67,7 @@
 
 | Status | Code | Description                               |
 | ------ | ---- | ----------------------------------------- |
-| 422    | --   | Error while validating request.           |​
+| 422    | 8  | Error while validating request.           |​
 #### Sample Error Response
 ​
 ```json
@@ -194,7 +194,7 @@ body
 
 | Status | Code | Description                               |
 | ------ | ---- | ----------------------------------------- |
-| 422    | ---- | Error while validating request.           |​
+| 422    | 8 | Error while validating request.           |​
 #### Sample Error Response
 ​
 ​
@@ -255,7 +255,7 @@ body
 ```
 ​
 ​
-### <a name="p"></a> `POST` /orders/cancel
+### <a name="postcancelorder"></a> `POST` /orders/cancel
 ​
 - POST Cancel order give the orders ID
 ​
@@ -324,7 +324,7 @@ body
 
 | Status | Code | Description                               |
 | ------ | ---- | ----------------------------------------- |
-| 422    | ---- | Error while validating request.           |​
+| 422    | 8 | Error while validating request.           |​
 #### Sample Error Response
 ​
 ```json
