@@ -38,23 +38,26 @@ Book.getAnswer = function (id,result){
 };
 
 Book.getQuestions = function (id,result){
+    
     const ACTION = '[getQuestion]'
-    logger.log('info', `${TAG}${ACTION}[SELECT * FROM books WHERE id=?]`);
-    sql.query("SELECT question FROM questions WHERE exam_id=? GROUP BY question ORDER BY question_id", id, function (err, res) {
+    logger.log('info', `${TAG}${ACTION}[SELECT question FROM questions WHERE exam_id=? ORDER BY question_id]`);
+    sql.query("SELECT question FROM questions WHERE exam_id=? ORDER BY question_id", id, function (err, res) {
         if (err) {
-            console.log("error: ", err);
+        
             result(null, err);
+       
         }
         else {
-            console.log("error: ", res );
+          
             result(null, res);
+        
         }
     });
 };
 
 Book.getChoices = function (id,result){
     const ACTION = '[getChoices]'
-    logger.log('info', `${TAG}${ACTION}[SELECT * FROM books WHERE id=?]`);
+    logger.log('info', `${TAG}${ACTION}[SELECT choices FROM choices WHERE exam_id=?]`);
     sql.query("SELECT choices FROM choices WHERE exam_id=?", id, function (err, res) {
         if (err) {
             console.log("error: ", err);

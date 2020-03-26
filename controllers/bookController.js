@@ -1,8 +1,12 @@
 var Book = require('../models/book');
+var httpContext = require('express-http-context');
+
+
 var Account = require('../models/account')
 const jwt = require('jsonwebtoken');
 const logger = require('../logger');
 const { response, SUCCESS, EMPLOYEE_EXISTS, CREATED,BOOK_CREATED,BOOK_EXISTS, EMPLOYEE_NOT_EXISTS, SUCCESS_CHANGE_BOOK_INFO,UNAUTHORIZED } = require('../response');
+
 
 exports.index = function(req, res) {
     res.send('NOT IMPLEMENTED: Site Home Page');
@@ -58,35 +62,37 @@ exports.book_create_get = function(req, res) {
 // Display answer form on GET.
 exports.get_answer = function(req, res) {
     Book.getAnswer(req.params.id,function(err,result){      
-        console.log('Answer ID foundsss',req.params) 
+        console.log('Answer ID foundsss',req.params.id) 
      
         if(result.length > 0){
             logger.log('info',`Successfully searched answer:[${JSON.stringify(result)}]`)
-            console.log('id affected', req.params.id)
-            console.log('id affected', result[0])
+            console.log('Answerddd ID found',result) 
           res.success(response(SUCCESS,'',result[0]));
         }
         else{
             logger.log('error',`Get unsuccessful${err}`)
-            console.log('Answer ID found',result)                   
+            console.log('Answer ID found',result) 
+            res.error(response(EMPLOYEE_NOT_EXISTS,'',result[0]))                  
         }             
   });
  
 };
 
 exports.get_questions = function(req, res) {
+    var requestId = httpContext.get('requestId');
+    console.log("cvmcxm,vncx",requestId)
+    logger.log('info', `[${res.req.method}][${req.originalUrl}]`);
     Book.getQuestions(req.params.id,function(err,result){      
-        console.log('Question ID foundsss',req.params) 
+ 
      
         if(result.length > 0){
-            logger.log('info',`Successfully searched questions:[${JSON.stringify(result)}]`)
-            console.log('id affectedss', req.params.id)
-            console.log('id affectededdd', result)
+
+    
           res.success(response(SUCCESS,'',result));
         }
         else{
-            logger.log('error',`Get unsuccessful${err}`)
-            console.log('Question ID found',result) 
+          
+   
             res.error(response(EMPLOYEE_NOT_EXISTS,'',result));                  
         }             
   });
@@ -95,17 +101,16 @@ exports.get_questions = function(req, res) {
 
 exports.get_choices = function(req, res) {
     Book.getChoices(req.params.id,function(err,result){      
-        console.log('Choices ID foundsss',req.params) 
+  
      
         if(result.length > 0){
-            logger.log('info',`Successfully searched questions:[${JSON.stringify(result)}]`)
-            console.log('id affected', req.params.id)
-            console.log('id affected', result[0])
+          
+      
           res.success(response(SUCCESS,'',result));
         }
         else{
             logger.log('error',`Get unsuccessful${err}`)
-            console.log('Choices ID found',result)    
+       
             res.error(response(EMPLOYEE_NOT_EXISTS,'',result));               
         }             
   });
@@ -205,18 +210,17 @@ exports.book_delete_delete = function(req, res) {
  
     
     const id = jwt.decode(token,'123')
-    console.log('id affected', id)
+ 
     Book.deletebyID(req.params.id,function(err,result){      
 
         if(result.affectedRows > 0){
             logger.log('info',`Successfully deleted Name:[${JSON.stringify(result)}]`)
-            console.log('id affected', req.params.id)
-          
+         
           res.success(response(SUCCESS,'',req.params.id));
         }
         else{
             logger.log('info',`Delete unsuccessful${err}`)
-            console.log('ID user found',req.params.id)                   
+                    
         }             
   });
     

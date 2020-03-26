@@ -23,6 +23,22 @@ console.log("BODDDYYYYY",req.query.job)
     });
 };
 
+exports.examinee_submitessay_post = function(req,res){
+    console.log('esssaayyy------------------',req.body)
+    Examinee.addEsssay(req.params.id,{text:req.body}).then(result => {
+        console.log('esssaayyy------------------',result)
+        if(result.affectedRows > 0) {
+            return res.success(response(SUCCESS, '', result));
+        }else {
+            return res.error(response(EMPLOYEE_NOT_EXISTS, ''));
+        }
+    })
+    .catch(err => {
+        res.error(err);
+    });
+}
+
+
 exports.examinee_update_put = function (req, res) {
     res.send('update');
 };
@@ -109,41 +125,21 @@ exports.examinee_getjobs_get  = function (req, res) {
 };
 
 exports.examinee_submit_post= function(req,res){
-
-    var new_account = new Examinee(req.body);
-    //handles null erro
-    if (!new_account.email || !new_account.password) {
-
-        res.status(400).send({ error: true, message: 'Please provide account details' });
-        logger.log('error', `Please provide account details`)
-    }
-    else {
-        // handles same book same
-        var checker =  Examinee.getAccount(new_account.email);
-        console.log("checkerssas", checker)
-        if (checker.length > 0) {
-            res.error(response(BOOK_EXISTS, ''))
+    console.log("reqbody",req.body)
+    Examinee.submitAnswer(req.params.id,req.body),function(err,result){      
+  
+     
+        if(result.length > 0){
+          
+      
+          res.success(response(SUCCESS,'',result));
         }
-        else {
-
-            Examinee.createAccount(new_account, function (err, result) {
-
-                if (err) {
-                    logger.log('error', `Error creating an account${err.code}`)
-                }
-                else {
-                    console.log('accountiddddd', result.insertId)
-                    let token = jwt.sign(result.insertId, '123');
-                    logger.log('info', `New account created[${JSON.stringify(new_account)}]`)
-                    res.success(response(BOOK_CREATED, '', { result, token: token }));
-
-                }
-            });
-        }
-
-
-
-
-    };
+        else{
+            logger.log('error',`Get unsuccessful${err}`)
+       
+            res.error(response(EMPLOYEE_NOT_EXISTS,'',result));               
+        }             
+  };
+   
     
 }
