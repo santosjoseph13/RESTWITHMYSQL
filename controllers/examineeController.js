@@ -15,12 +15,27 @@ exports.examinee_getexam_get = function (req, res) {
 console.log("BODDDYYYYY",req.query.job)
     Examinee.getExam(req.query.job,function (err,result){
         if(err){
-            console.log('wwwwwwwwwwwwwww',err)
             res.error(response(BOOK_EXISTS, '',err))
         } 
         else{
         res.success(response(SUCCESS,'',result))}
     });
+};
+
+exports.getscore = function (req, res) {
+        Examinee.getScore(req.params.id).then((result)=>{
+            res.success(response(SUCCESS,'',result))
+        }).catch((err)=>{
+            res.error(response(BOOK_EXISTS, '',err))
+        })       
+};
+
+exports.getEssay = function (req, res) {
+    Examinee.getEssay(req.params.id).then((result)=>{
+        res.success(response(SUCCESS,'',result))
+    }).catch((err)=>{
+        res.error(response(BOOK_EXISTS, '',err))
+    })       
 };
 
 exports.examinee_submitessay_post = function(req,res){
@@ -46,7 +61,7 @@ exports.examinee_delete_post = function (req, res) {
     res.send('delete');
 };
 exports.examinee_create_post = async function (req, res) {
-    var new_account = new Examinee(req.body);
+    var new_account = req.body
     //handles null erro
     if (!new_account.email || !new_account.password) {
 
@@ -56,23 +71,19 @@ exports.examinee_create_post = async function (req, res) {
     else {
         // handles same book same
         var checker = await Examinee.getAccount(new_account.email);
-        console.log("checkerssas", checker)
         if (checker.length > 0) {
             res.error(response(BOOK_EXISTS, ''))
         }
         else {
-
+            console.log()
             Examinee.createAccount(new_account, function (err, result) {
-
                 if (err) {
                     logger.log('error', `Error creating an account${err.code}`)
                 }
                 else {
-                    console.log('accountiddddd', result.insertId)
                     let token = jwt.sign(result.insertId, '123');
                     logger.log('info', `New account created[${JSON.stringify(new_account)}]`)
                     res.success(response(BOOK_CREATED, '', { result, token: token }));
-
                 }
             });
         }
@@ -126,12 +137,23 @@ exports.examinee_getjobs_get  = function (req, res) {
 
 exports.examinee_submit_post= function(req,res){
     console.log("reqbody",req.body)
-    Examinee.submitAnswer(req.params.id,req.body),function(err,result){      
-  
-     
-        if(result.length > 0){
-          
-      
+    Examinee.submitAnswer(req.params.id,req.body),function(err,result){         
+        if(result.length > 0){     
+          res.success(response(SUCCESS,'',result));
+        }
+        else{
+            logger.log('error',`Get unsuccessful${err}`)
+       
+            res.error(response(EMPLOYEE_NOT_EXISTS,'',result));               
+        }             
+  };    
+}
+
+
+exports.examinee_finished_exam= function(req,res){
+    console.log("reqbody",req.body)
+    Examinee.finishedExam(req.params.id,req.body),function(err,result){         
+        if(result.length > 0){     
           res.success(response(SUCCESS,'',result));
         }
         else{
